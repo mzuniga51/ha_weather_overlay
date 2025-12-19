@@ -126,14 +126,14 @@
       type: 'clouds'
     },
     'fog': {
-      maxParticles: 16,
-      color: 'rgba(220, 220, 220, 0.10)',
-      speedMin: 0.15,
+      maxParticles: 70,
+      color: 'rgba(220, 220, 220, 0.05)',
+      speedMin: 0.2,
       speedMax: 0.4,
-      sizeMin: 100,
-      sizeMax: 200,
-      swayAmount: 0.2,
-      type: 'clouds'
+      sizeMin: 1000,
+      sizeMax: 2000,
+      swayAmount: 0.5,
+      type: 'fog'
     },
     'snowy': {
       maxParticles: 40,
@@ -276,9 +276,13 @@
         return;
       }
       
-      if (this.type === 'clouds') {
+      if (this.type === 'clouds' || this.type === 'fog') {
         this.x += this.speed;
-        this.y += Math.sin(this.x * 0.01) * 0.2;
+        if (this.type === 'clouds'){
+          this.y += Math.sin(this.x * 0.01) * 0.2;
+        } else{
+          this.y += Math.sin(this.x * 0.01) * 0.02;
+        }
         
         if (this.x > window.innerWidth + this.size) {
           this.x = -this.size;
@@ -369,7 +373,23 @@
         ctx.strokeStyle = config.color || 'rgba(174, 194, 224, 0.35)';
         ctx.lineWidth = this.size;
         ctx.stroke();
+      } else if (this.type === 'fog') {
+        const grad = ctx.createLinearGradient(
+            this.x - this.size, 0,
+            this.x + this.size, 0
+
+        );
+        grad.addColorStop(0, 'rgba(220, 220, 220, 0)');
+        grad.addColorStop(0.5, weatherConfigs[currentWeather].color);
+        grad.addColorStop(1, 'rgba(220, 220, 220, 0)');
+        
+        ctx.globalAlpha = this.opacity * 0.2;
+        ctx.fillStyle = grad;
+        ctx.fillRect(this.x - this.size, this.y -15, this.size * 2000, 300);
+        ctx.globalAlpha = 1;
       }
+
+
       
       ctx.globalAlpha = 1;
     }
