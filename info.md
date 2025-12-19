@@ -27,6 +27,7 @@ Fullscreen animated weather effects that automatically react to your weather ent
 | 🌨️ Mixed | Snow and rain |
 | 🌙 Clear Night | 200 twinkling stars in 4 drifting groups |
 | ☀️ Sunny | Warm golden glow with sun circle |
+| ⚪ Hail | 5 falling hailstones |
 
 ## 📋 Requirements
 
